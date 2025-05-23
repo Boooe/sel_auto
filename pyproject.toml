@@ -1,0 +1,24 @@
+[project]
+name = "sel-auto"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "小白",email = "a13111573303@163.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "selenium (>=4.32.0,<5.0.0)",
+    "selenium-wire[full] (>=5.1.0,<6.0.0)",
+    "setuptools (>=80.8.0,<81.0.0)",
+    "packaging (>=25.0,<26.0)",
+    "blinker (==1.6.2)",
+]
+
+[tool.poetry]
+packages = [{include = "sel_auto", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
