@@ -38,3 +38,7 @@ Thumbs.db
 
 # 忽略 Poetry 锁定缓存（可选，通常保留）
 # poetry.lock
+
+
+# 忽略日志目录
+src/sel_auto/logs/
