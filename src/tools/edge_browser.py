@@ -6,7 +6,7 @@ from typing import Dict, Optional
 
 from selenium.webdriver.edge.options import Options
 from seleniumwire import webdriver
-
+from urllib.parse import parse_qs
 
 class EdgeBrowser:
     def __init__(self, 
@@ -26,7 +26,7 @@ class EdgeBrowser:
         """
         self.options = Options()
         self.options.use_chromium = True
-        
+        self.options.add_argument('--auto-open-devtools-for-tabs')
         # 配置浏览器选项
         if user_data_dir:
             self.options.add_argument(f'--user-data-dir={user_data_dir}')
@@ -51,7 +51,7 @@ class EdgeBrowser:
             options=self.options,
             seleniumwire_options=self.seleniumwire_options
         )
-    
+        self.driver.maximize_window()
     def open_url(self, url: str):
         """打开指定URL"""
         self.driver.get(url)
@@ -63,7 +63,7 @@ class EdgeBrowser:
         :param url_filter: URL过滤字符串，如 'deallist_find.jsp'
         :return: 过滤后的请求列表
         """
-        requests = []
+        response_list = []
         for request in self.driver.requests:
             if request.response:
                 url = request.url.lower()
@@ -73,14 +73,29 @@ class EdgeBrowser:
                 try:
                     body_str = request.response.body.decode("utf-8", errors="replace")
                     body_json = json.loads(body_str)
-                    requests.append({
+                    response_dict = {
                         'url': request.url,
                         'status': request.response.status_code,
                         'body': body_json
-                    })
+                    }
+                    if request.method =='POST':
+                        content_type = request.headers.get("Content-Type", "").lower()
+                        body_str = request.body.decode("utf-8", errors="replace")
+                        # print("📨 POST Payload:")
+
+                        if "application/json" in content_type:
+                            payload = json.loads(body_str)
+                            response_dict['payload'] = payload
+                        elif "application/x-www-form-urlencoded" in content_type:
+                            form_data = parse_qs(body_str)
+                            response_dict['form'] = form_data
+                        else:
+                            response_dict['request_body'] = body_str
+
+                    response_list.append(response_dict)
                 except Exception:
                     continue
-        return requests
+        return response_list
     
     def save_har(self, file_path: str):
         """保存HAR文件"""

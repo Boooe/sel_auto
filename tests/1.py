@@ -59,7 +59,7 @@ for request in driver.requests:
         content_type = response_headers.get('Content-Type', '')
 
         if "deallist_find.jsp" in url:
-            print(f"\n📄 URL: {request.url}")
+            print(f"\n📄 URL: {request.url} {request.body}")
             print(f"🔄 Status: {request.response.status_code}")
             print("📦 Response Body:")
             try:
