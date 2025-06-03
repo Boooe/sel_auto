@@ -42,3 +42,6 @@ Thumbs.db
 
 # 忽略日志目录
 src/sel_auto/logs/
+
+# 忽略测试请求的har
+src/tools/network.har
