@@ -45,3 +45,6 @@ src/sel_auto/logs/
 
 # 忽略测试请求的har
 src/tools/network.har
+
+# 忽略 浏览器环境文件夹
+src/tools/logs
