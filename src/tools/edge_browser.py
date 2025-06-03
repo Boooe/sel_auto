@@ -27,6 +27,7 @@ class EdgeBrowser:
         self.options = Options()
         self.options.use_chromium = True
         self.options.add_argument('--auto-open-devtools-for-tabs')
+        self.options.add_extension(r'.\Anti1.0.3.crx') # 使用本地插件
         # 配置浏览器选项
         if user_data_dir:
             self.options.add_argument(f'--user-data-dir={user_data_dir}')
@@ -123,7 +124,7 @@ if __name__ == "__main__":
         browser.open_url("http://deal.ggzy.gov.cn/ds/deal/dealList.jsp")
         input('等待...2')
         
-        # 获取特定请求
+        # 获取特定网络请求返回内容  eg:全国公共资源交易平台
         requests = browser.get_requests("deallist_find.jsp")
         for req in requests:
             print(f"\n📄 URL: {req['url']}")
